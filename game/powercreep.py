@@ -25,6 +25,14 @@ vertical_block_width = 0.1* game_board_width
 horisontal_block_height = 0.2* game_board_height
 horisontal_block_width =0.7 * game_board_width
 
+
+sheild_radius_item = 50
+sheild_radius_held = 30
+
+sheild_color_item = (5, 103, 250)
+sheild_color_held = (5, 209, 250)
+
+
 current_blocks = []
 # x and y are decided in the moment
 
