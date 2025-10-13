@@ -10,8 +10,8 @@ except ModuleNotFoundError:
 import random
 #if error.
 #run "pip install pygame" in console.
-game_board_height = 1000
-game_board_width = 1900
+game_board_height = 800
+game_board_width = 1000
 score = 0
 scoreMult = 1
 
@@ -34,6 +34,22 @@ held_border = 2
 
 current_blocks = []
 ground_sheilds = []
+def circle_mouse_collision(circle_center, circle_radius, mouse_rect):
+    cx = circle_center[0]
+    cy =circle_center[1]
+    rx, ry, rw, rh = mouse_rect
+
+    # Find the closest point on the rectangle to the circle center
+    closest_x = max(rx, min(cx, rx + rw))
+    closest_y = max(ry, min(cy, ry + rh))
+
+    # Calculate the distance between circle center and this closest point
+    distance_x = cx - closest_x
+    distance_y = cy - closest_y
+    distance_squared = distance_x ** 2 + distance_y ** 2
+
+    return distance_squared < (circle_radius ** 2)
+
 # x and y are decided in the moment
 
 # Initialize Pygame
@@ -123,6 +139,7 @@ while not lost:
             block1 = [[random.randint(0,game_board_width-1),-vertical_block_height, vertical_block_width,vertical_block_height], "down"]
             current_blocks.append(block1)
         case 75:
+            ground_sheilds = []
             g_sheild =[screen,sheild_color,(random.randint(0,game_board_width),random.randint(0,game_board_height)),sheild_radius_item]
             ground_sheilds.append(g_sheild)
         case 110:
@@ -169,7 +186,13 @@ while not lost:
         block_rect = pygame.Rect(item[0])
         if cursor_col.colliderect(block_rect):
             lost = True
-          
+    now_sheilds = ground_sheilds
+    for items in now_sheilds:
+        
+        pygame.draw.circle(items[0],items[1],items[2],items[3])    
+        
+        if circle_mouse_collision(items[1],items[3],cursor_col):
+            ground_sheilds.remove(items)
     pygame.display.flip()
     score += 1 
 
