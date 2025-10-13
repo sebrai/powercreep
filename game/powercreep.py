@@ -29,11 +29,11 @@ horisontal_block_width =0.7 * game_board_width
 sheild_radius_item = 50
 sheild_radius_held = 30
 
-sheild_color_item = (5, 103, 250)
-sheild_color_held = (5, 209, 250)
-
+sheild_color = (5, 209, 250)
+held_border = 2
 
 current_blocks = []
+ground_sheilds = []
 # x and y are decided in the moment
 
 # Initialize Pygame
@@ -117,12 +117,14 @@ while not lost:
     screen.blit(text_surface, (10, 40))
     if mdisplay:
         screen.blit(mouse_pos,(10,70))
-
+        # decide when to create death blocks
     match score- loop:
         case 30:
             block1 = [[random.randint(0,game_board_width-1),-vertical_block_height, vertical_block_width,vertical_block_height], "down"]
             current_blocks.append(block1)
-          
+        case 75:
+            g_sheild =[screen,sheild_color,(random.randint(0,game_board_width),random.randint(0,game_board_height)),sheild_radius_item]
+            ground_sheilds.append(g_sheild)
         case 110:
             block2 = [[game_board_width,random.randint(0,game_board_height-1), horisontal_block_width,horisontal_block_height], "left"]
             current_blocks.append(block2)
@@ -136,6 +138,7 @@ while not lost:
             loop +=150
             scoreMult += 0.2
     now_blocks = current_blocks
+    # make blocks show
     for item in now_blocks:
         if item[1]== "down":
             #   print("it work")
