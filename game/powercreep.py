@@ -34,6 +34,7 @@ held_border = 2
 
 current_blocks = []
 ground_sheilds = []
+holding_sheild = False
 def circle_mouse_collision(circle_center, circle_radius, mouse_rect):
     cx = circle_center[0]
     cy =circle_center[1]
@@ -154,7 +155,20 @@ while not lost:
         case 150:
             loop +=150
             scoreMult += 0.2
+    
+    now_sheilds = ground_sheilds
+    for items in now_sheilds:
+        
+        pygame.draw.circle(items[0],items[1],items[2],items[3])    
+        # print(items)
+        if circle_mouse_collision(items[2],items[3],cursor_col):
+            holding_sheild =True
+            ground_sheilds.remove(items)
+
+    if holding_sheild:
+        pygame.draw.circle(screen,sheild_color,(mouse_x,mouse_y),sheild_radius_held,held_border)
     now_blocks = current_blocks
+
     # make blocks show
     for item in now_blocks:
         if item[1]== "down":
@@ -184,15 +198,13 @@ while not lost:
 
         pygame.draw.rect(screen,death_block_color,item[0])
         block_rect = pygame.Rect(item[0])
+        for items in now_blocks:
+            if circle_mouse_collision((mouse_x,mouse_y),sheild_radius_held,item[0]):
+                current_blocks.remove(items)
+                holding_sheild = False
         if cursor_col.colliderect(block_rect):
             lost = True
-    now_sheilds = ground_sheilds
-    for items in now_sheilds:
-        
-        pygame.draw.circle(items[0],items[1],items[2],items[3])    
-        
-        if circle_mouse_collision(items[1],items[3],cursor_col):
-            ground_sheilds.remove(items)
+   
     pygame.display.flip()
     score += 1 
 
