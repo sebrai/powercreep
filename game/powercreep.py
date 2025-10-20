@@ -196,14 +196,19 @@ while not lost:
 
         
 
-        pygame.draw.rect(screen,death_block_color,item[0])
+        pygame.draw.rect(screen, death_block_color, item[0])
         block_rect = pygame.Rect(item[0])
-        for items in now_blocks:
-            if circle_square_collision((mouse_x,mouse_y),sheild_radius_held,item[0]):
-                current_blocks.remove(items)
+
+        # Only destroy blocks if a shield is being held
+        if holding_sheild:
+            if circle_square_collision((mouse_x, mouse_y), sheild_radius_held, item[0]):
+                current_blocks.remove(item)
                 holding_sheild = False
-        if cursor_col.colliderect(block_rect) and not (holding_sheild):
+
+        # Lose the game if you touch a block without a shield
+        if cursor_col.colliderect(block_rect) and not holding_sheild:
             lost = True
+
    
     pygame.display.flip()
     score += 1 
