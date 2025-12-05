@@ -216,4 +216,13 @@ while not lost:
 
     # Cap the frame rate
     clock.tick(60)
-print(f"your score is: {round(score*scoreMult,1)}")
+f_score = round(score*scoreMult,1)
+print(f"your score is: {f_score}")
+try:
+    with open("scores.txt","a") as f:
+        f.writelines(f"{f_score}")
+except FileNotFoundError:
+    with open("scores.txt","w") as f:
+        f.write("")
+    with open("scores.txt","a") as f:
+        f.write(f"{f_score}")
